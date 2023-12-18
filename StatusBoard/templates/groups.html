@@ -1,0 +1,116 @@
+{% extends "base.html" %} 
+{% block title %}Status Board{%endblock%}
+{% block user %}
+
+{%endblock%}
+{% block content %}
+
+{# -----------------Main Group List------------ #}
+{% if grouplist %}
+
+<label class="form-label">Search:</label>
+<input class="form-control" autocomplete="off" name="q" hx-get="/search/group" hx-trigger="keyup changed delay:250ms" hx-target="#results">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Group Name</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody id="results">
+        {% for r in grouplist %}
+        <tr>
+            <td class="col"><a href="{{ url_for('groupviews.groupShow', id=r.id ) }}">{{r.name}}</a></td><td class="col">{{r.description}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+    {%  if userinfo.is_admin %}
+    <a href="/group/admin/add">Add New Group</a>
+    {% endif %}
+{% endif %}
+
+{# -----------------Single Group View-------------- #}
+
+{% if groupinfo %}
+<center><h1>{{groupinfo.name}}</h1> 
+{% if userinfo.is_admin or userinfo is in groupinfo.mods %}
+[<a href="{{ url_for('groupviews.groupAdminEdit', id=groupinfo.id)}}">Manage Group</a>]
+{% endif %}
+</center>
+
+        <div class="row row-cols-3 text-begin pb-3">
+            <div class="col-2">Name</div>
+            <div class="col-1">Status</div>
+            <div class="col-7 ps-3">Notes</div>
+            <div class="col-2">Last Updated</div>
+        </div>    
+        {% for member in groupinfo.members %}
+          <div class="row row-cols-3  text-begin">
+            <div class="col-2 ">
+                <a href="{{ url_for('userviews.userinfo', username=member.username) }}">{{ member.first_name }} {{ member.last_name }}</a>
+                
+            </div>
+            <div class="col-1">
+                <button onClick="location.href='{{ url_for('userviews.userinfo', username=member.username) }}'" type="button" class="btn {{member.status.color}}">{{ member.status.name }}</button>
+            </div>
+            <div class="col-7 ps-3 text-start">{% if member.note %} {{ member.note }} {%endif%}</div>
+          </div>
+        {% endfor %}
+        <p>
+<div class="container">
+<div class="row col-3">
+    Moderators
+    <ul class="list-group">
+        {% for m in groupinfo.mods %}
+        <li class="list-group-item"><a href="{{ url_for('userviews.userinfo', username=m.username) }}">{{ m.first_name }} {{ m.last_name }}</a></li>
+        {% endfor %}
+    </ul>
+    
+    </div>        
+</div>
+
+{%endif%}
+
+
+
+
+
+
+{% if not groupinfo and not grouplist %}
+<center><h1>{{groupinfo.name}}</h1> 
+{% if userinfo.is_admin or userinfo is in groupinfo.mods %}
+[<a href="{{ url_for('groupviews.groupAdminEdit', id=groupinfo.id)}}">Manage Group</a>]
+{% endif %}
+</center>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col" class="w-25">Full Name</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="w-50">Notes</th>
+            <th scope="col">Last Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in groupinfo.members %}
+        <tr>
+           <td>{{m.first_name}} {{m.last_name}}</td> 
+           <td><a href="#" class="btn {{m.status.color}}">{{m.status.name}}</a></td>
+           <td>{{m.nodes}}</td>
+           <td></td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+        
+
+{%endif%}
+
+
+
+  
+{% endblock %}

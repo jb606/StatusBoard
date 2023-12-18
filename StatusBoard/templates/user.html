@@ -1,0 +1,47 @@
+{% extends "base.html" %} 
+{% block title %}Status Board{%endblock%}
+
+{% set username=userinfo.username %}
+
+{% block user %}
+
+{%endblock%}
+{% block content %}
+
+<h2>
+<center>Welcome {{userinfo.first_name }} {{ userinfo.last_name }}</center>
+<center>({{ userinfo.username }})</center><br/>
+<center>Current Status: <button type=button class="btn {{userinfo.status.color}}">{{ userinfo.status.name }}</button></center>
+<br>
+
+    <center> Select Status </center>
+{% for s in status|batch(3, '&nbsp;')  %}
+<div class="row row-cols-3 text-center">
+    {%- for c in s %}
+    
+    <div class="col-3" ><div class="p-1"><button type=button onClick="setUserStatus('{{userinfo.username}}','{{c.id}}')" class="btn {{c.color}}">{{ c.name }}</button></div></div>
+    
+    {%- endfor %}
+</div>
+{% endfor %}   
+<br>
+<form method="POST">
+<div class="mb-3">
+    <label for="notesInput" class="form-label">Notes</label>
+    <input type="text" id="notesInput" class="form-control" name="notes" {% if userinfo.note %} value="{{ userinfo.note}}" {% endif %}>
+</div>
+<div class="mb-3">
+    <label for="statusReset" class="form-label">Do not reset my status at night</label>
+    <input id="statusReset" class="form-check-input" type="checkbox" name="status_reset" {% if userinfo.nightly_reset_status %} checked {% endif %}>
+</div>
+<div class="mb-3">
+    <label for="notesReset" class="form-label">Do not reset my notes at night</label>
+    <input id="notesReset" class="form-check-input" type="checkbox" name="notes_reset" {% if userinfo.nightly_reset_notes %} checked {% endif %}>
+</div>
+<center><button type="submit" class="btn btn-primary">Update</button></center>
+<br><br>
+
+
+</form> 
+
+{% endblock %}

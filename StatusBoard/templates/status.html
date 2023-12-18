@@ -1,0 +1,38 @@
+{% extends "base.html" %} 
+{% block title %}Status Board{%endblock%}
+
+
+{% block user %}
+
+{%endblock%}
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Status Name</th>
+        <th scope="col">Status Button</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in status %}
+        <tr>
+            <td><a href="/status/edit/{{s.id}}">{{s.name}}</a></td>
+            <td><button type=button class="btn {{s.color}}">{{ s.name }}</button></td>
+        </tr>
+      {% endfor %}
+        <tr>
+            <form class="row g-3" method="POST">
+                <td><input type="text" class="form-control" placeholder="Status Name" aria-label="Status Name" name="name" required></td>
+                {% set color_dropdown_name='status_color' %}
+                <td>{% include "colordropdown.html" %}</td>
+                <td><button type="submit" class="btn btn-primary">Add</button></td>
+            </form>
+        </tr>
+    
+    </tbody>
+</table>
+  
+
+  
+{% endblock %}

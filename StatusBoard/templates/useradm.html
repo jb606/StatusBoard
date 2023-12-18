@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+{% block title %}Status Board{%endblock%}
+{% block user %}
+
+{%endblock%}
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">User Name</th>
+        <th scope="col">Full Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in userlist %}
+        <tr>
+            <td><a href="{{ url_for('userviews.userAdminEdit', id=u.id )}}">{{u.username}}</a></td>
+            <td><a href="{{ url_for('userviews.userAdminEdit', id=u.id)}}">{{u.first_name}} {{u.last_name}}</a></td>
+            
+        </tr>
+      {% endfor %}
+       
+    </tbody>
+</table>
+
+<button onClick="location.href='{{ url_for('userviews.userAdminAddUser') }}'" type="submit" class="btn btn-primary">Add New User</button>
+
+
+  
+{% endblock %}

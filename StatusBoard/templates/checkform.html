@@ -1,0 +1,9 @@
+{% for r in results %}
+{% if r is not in groupinfo.members  %}
+
+<div class="row row-cols-2 text-begin">
+<div class="col-3">{{r.first_name}} {{r.last_name}} ({{r.username}})</div>
+<div class="col-3"><a class="btn btn-success btn-sm" href="{{ url_for('groupviews.groupAdminUpdateMembers', gid=groupinfo.id,uid=r.id,action='add')}}" >Add</a></div>
+</div>
+{%endif%}
+{% endfor %}

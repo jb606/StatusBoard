@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">StatusBoard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        
+        <ul class="navbar-nav me-auto me-2 mb-lg-0">
+          {% if is_logged_in %}
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ url_for('userviews.userAdminEdit', id=userinfo.id)}}">My Profile</a>
+          </li>
+          
+          {% endif %}
+          <li class="nav-item ">
+            <a class="nav-link" href="/groups">Groups</a>
+          </li>
+          {% if userinfo.is_admin %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Admin
+            </a>
+            <ul class="dropdown-menu me-auto">
+              
+              <li><a class="dropdown-item" href="{{ url_for('statusviews.statusHome')}}">Status Editor</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('userviews.userAdminHome')}}">User Admin</a></li>  
+            </ul>
+            {% endif %}
+            
+          </li>
+        </ul>
+        
+          {% if is_logged_in %}
+          <ul class="navbar-nav ma-auto me-2 mb-lg-0"> 
+            <li class="nav-item ">
+              Current Status: {% include "current_status_button.html" %}
+            </li>
+          </ul>
+          {% else %}
+          <ul class="navbar-nav ma-auto me-2 mb-lg-0"> 
+            <li class="nav-item ">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          </ul>
+          {% endif %}
+          
+        <!-- <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      -->
+            
+          
+      </div>
+      
+    </div>
+  </nav>

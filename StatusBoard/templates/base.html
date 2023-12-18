@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %}</title>
+    <link href="{{ url_for('static',filename='bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+      .btn {
+        padding: 5px;
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    {% block navbar %}
+    {% include "navi.html" %}
+    {% endblock %}
+    <div class="container">
+    
+    {% block content %}
+    {% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript">
+      function deleteStatus(statusID) {
+        fetch("/status/delete", {
+          method: "POST",
+          body: JSON.stringify({ statusID: statusID }),
+        }).then((_res) => {
+          window.location.href = "/status";
+        });
+      }
+
+      </script>
+      <script type="text/javascript">
+        function setUserStatus(user,status) {
+          fetch(`/user/${user}/status/${status}`, {
+            
+          }).then((_res) => {
+            window.location.href = `/user/${user}`;
+          });
+        }
+  
+        </script>
+        <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
+  </body>
+</html>

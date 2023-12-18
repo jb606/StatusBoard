@@ -1,0 +1,9 @@
+env/
+__pycache__
+instance/
+import.py
+status.csv
+client_secrets.json
+custom_ca/
+og-StatusBoard/
+setup-env.sh

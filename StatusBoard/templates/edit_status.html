@@ -1,0 +1,35 @@
+{% extends "base.html" %} 
+{% block title %}Status Board{%endblock%}
+
+{% include "navi.html" %}
+{% block user %}
+
+{%endblock%}
+{% block content %}
+<form class="row g-3" method="POST">
+  <button name=delete type="button" onClick="deleteStatus('{{ status.id }}')" class="btn btn-danger" aria-label="Close">DELETE</button>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Status Name</th>
+        <th scope="col">Current Status Button</th>
+        <th scope="col">New Status Button</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><input type=text name="name" value="{{status.name}}"></td>
+          <td><button type=button class="btn {{status.color}}">{{ status.name }}</button></td>
+          <td>{% set color_dropdown_name='status_color' %}
+            {% include "colordropdown.html" %}</td>
+          
+        </tr>
+        
+    </tbody>
+</table>
+<button name=save value={{ status.id }} type="submit" class="btn btn-primary" aria-label="Close">Save</button>
+
+  
+</form>
+  
+{% endblock %}
