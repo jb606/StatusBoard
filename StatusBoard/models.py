@@ -36,8 +36,6 @@ class Group(db.Model):
 @event.listens_for(Group.__table__, 'after_create')
 def create_default_group_data(*args, **kwargs):
     db.session.add(Group(name='Demo'))
-    db.session.add(Group(name='Group 2'))
-    db.session.add(Group(name='Group 3'))
     db.session.commit()
 
 

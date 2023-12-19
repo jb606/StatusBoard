@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, jsonify, redirect
+from flask import Blueprint, render_template, url_for, request, jsonify, redirect, flash
 from . import oidc
 from . import db
 from .models import User, Status
@@ -88,21 +88,9 @@ def set_user_status(username, statusid):
 
     return jsonify({})
 
-@userviews.route("/page/login")
-@oidc.require_login 
-def pageLogin():
-    return redirect(url_for('userviews.home'))
-
-@userviews.route("/page/logout")
-def pageLogout():
-    #refresh_token = oidc.get_refresh_token()
-    oidc.logout()
-    return redirect(url_for('userviews.home'))
-
-
-
 
 @userviews.route("/search/user")
+@oidc.require_login
 def userSearch():
     q = request.args.get("q")
     print(q)
@@ -115,6 +103,7 @@ def userSearch():
 
     return render_template("search_results.html", results=results)
 @userviews.route("/search/user/excludegroup/<id>")
+@oidc.require_login
 def userSearchExcludingGroupMembers(id):
     from .models import Group
     q = request.args.get("q")
@@ -134,8 +123,8 @@ def userSearchExcludingGroupMembers(id):
 @oidc.require_login
 def userAdminHome():
     userinfo = getuserinfo(oidc)
-    if userinfo.is_admin == False:
-        return redirect(url_for('views.home'))
+    if not userinfo.is_admin:
+        return redirect(url_for('usersview.home'))
     
     allUsers = User.query.with_entities(User.id,User.username,User.first_name,User.last_name)
     return render_template("useradm.html", userinfo=userinfo, userlist=allUsers, is_logged_in=True)
@@ -144,6 +133,8 @@ def userAdminHome():
 @oidc.require_login
 def userAdminEdit(id):
     userinfo = getuserinfo(oidc)
+    if not userinfo.is_admin:
+        return redirect(url_for('usersview.home'))
     u = User.query.get(id)
     if userinfo.is_admin == False and userinfo.id != u.id:
         return redirect( url_for('userviews.home') )
@@ -179,6 +170,8 @@ def userAdminEdit(id):
 @oidc.require_login
 def userAdminAddUser():
     userinfo = getuserinfo(oidc)
+    if not userinfo.is_admin:
+        return redirect(url_for('usersview.home'))
     if request.method == 'POST':
         
         un = request.form.get('username')
@@ -200,7 +193,14 @@ def userAdminAddUser():
 @userviews.route('/admin/user/delete/<id>', methods=['GET','POST'])
 @oidc.require_login
 def userAdminDelUser(id):
-    return "Hold my beer"
+    userinfo = getuserinfo(oidc)
+    if not userinfo.is_admin:
+        return redirect(url_for('usersview.home'))
+    u = User.query.get(id)
+    if u:
+        db.session.delete(u)
+        db.session.commit()
+        return redirect(url_for('userviews.userAdminHome'))
 
 
     

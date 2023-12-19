@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_oidc import OpenIDConnect
 from werkzeug.exceptions import HTTPException

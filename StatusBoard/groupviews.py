@@ -81,6 +81,16 @@ def groupAdminEdit(id):
         newGroupForm.description = groupinfo.description
     return render_template("groupsmgr.html", form=newGroupForm, groupinfo=groupinfo, userinfo=userinfo,  is_logged_in=True )
 
+@groupviews.route("/group/admin/delete/<id>", methods=['GET', 'POST'])
+@oidc.require_login
+def groupAdminDelete(id):
+    userinfo = getuserinfo(oidc)
+    groupinfo = Group.query.get(id)
+    if not userinfo.is_admin:
+        return redirect(url_for('userviews.home'))
+    db.session.delete(groupinfo)
+    db.session.commit()
+    return render_template("groupsmgr.html", userinfo=userinfo,  is_logged_in=True )
 
 @groupviews.route("/group/admin/<gid>/member", methods=['GET', 'POST'])
 @oidc.require_login
