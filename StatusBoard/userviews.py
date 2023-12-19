@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, jsonify, redirect, flash
+from flask import Blueprint, render_template, url_for, request, jsonify, redirect
 from . import oidc
 from . import db
 from .models import User, Status
