@@ -1,0 +1,13 @@
+Django
+django-bootstrap-icons
+django-bootstrap5
+django-crispy-forms
+django-filter
+django-htmx
+django-tables2
+django-allauth
+pyaml
+pycparser
+PyYAML
+requests
+jwt

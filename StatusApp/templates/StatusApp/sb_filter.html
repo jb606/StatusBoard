@@ -1,0 +1,30 @@
+{% extends "sb_base.html" %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+{%block pagetitle%}StatusBoard Groups{%endblock%}
+
+
+
+  {%block crud%}
+
+    {% render_table table 'django_tables2/bootstrap5.html' %}
+    {% if user.is_staff %}
+ 
+
+
+
+
+
+    {%endif%}
+  {%endblock%}
+  {%block filter_block%}
+  {% if filters %}
+          Filters<p>
+            <form action="" method="get" class="form form-inline">
+              {% bootstrap_form filter.form layout='inline' %}
+              {% bootstrap_button 'Filter' %}
+            </form>
+        {%endif %}
+  {%endblock%}
+

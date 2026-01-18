@@ -1,0 +1,35 @@
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
+
+<form
+      hx-post={% url 'status:user-modal' slug=user.slug%} 
+      hx-swap=none
+      hx-on:htmx:after-request="
+        if (event.detail.xhr.status === 204)
+          bootstrap.Modal.getInstance('#set_status').hide()
+      ">
+<div class="modal-dialog">
+    <div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Update Status</h5>
+  </div>
+  <div class="modal-body">
+
+      {% csrf_token %}
+    {{ form|crispy }}
+
+  </div>
+  <div class="modal-footer">
+    
+    <button type="button" data-bs-dismiss="modal">Cancel</button>
+    <button type="submit">Save</button>
+  </div>
+</div>
+</div>
+
+</form>
+
+
+
+

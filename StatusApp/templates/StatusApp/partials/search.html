@@ -1,0 +1,28 @@
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+{% load crispy_forms_tags %}
+
+<div id="person_search" class="row mb-2">
+{%if users %}
+
+  {%for u in users %}
+    <div class="col-2">{{ u }}</div>
+    <div class="col-1">
+      <a href="#"
+      hx-target="#group_members"
+      hx-get="{% url 'status:sb-group-crud' slug=group.slug user=u.slug action="addmember" %}"
+       ><button>ADD</button></a>
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3">
+    </div>
+  {%endfor%}
+
+{%endif%}
+</div>
+
+
+
+  
+  
