@@ -23,6 +23,7 @@ except:
 DEBUG = env('SB_DEBUG')
 SECRET_KEY = env('SB_SECRET_KEY', default=get_random_secret_key())
 ALLOWED_HOSTS = env.list("SB_ALLOWED_HOSTS", default=[])
+DATA_DIR = env('SB_DATA_DIR', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
 
 
 # Application definition
@@ -67,7 +68,8 @@ ROOT_URLCONF = "StatusBoard.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR /'templates'),
+                 os.path.join(BASE_DIR /'templates/allauth')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,9 +87,7 @@ WSGI_APPLICATION = "StatusBoard.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Default to SQLite if DATABASE_URL is not set
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
+        default=DATA_DIR,
     )
 }
 
