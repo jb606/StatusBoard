@@ -3,6 +3,7 @@ import os
 import environ
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
+from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(SB_DEBUG=(bool, False),
                   SB_ENABLE_OIDC=(bool, False))
 
-try: 
+try:
     environ.Env.read_env(str(BASE_DIR / '.env'))
 except:
     raise ImproperlyConfigured(f"Missing required env file {BASE_DIR}/.env")
@@ -20,7 +21,7 @@ except:
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 DEBUG = env('SB_DEBUG')
-SECRET_KEY = env('SB_SECRET_KEY')
+SECRET_KEY = env('SB_SECRET_KEY', default=get_random_secret_key())
 ALLOWED_HOSTS = env.list("SB_ALLOWED_HOSTS", default=[])
 
 
