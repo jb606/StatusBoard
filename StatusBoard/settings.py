@@ -23,7 +23,7 @@ except:
 DEBUG = env('SB_DEBUG')
 SECRET_KEY = env('SB_SECRET_KEY', default=get_random_secret_key())
 ALLOWED_HOSTS = env.list("SB_ALLOWED_HOSTS", default=[])
-DATA_DIR = env('SB_DATA_DIR', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+DATA_DIR = env('SB_DATA_DIR', default=BASE_DIR)
 
 
 # Application definition
@@ -87,7 +87,7 @@ WSGI_APPLICATION = "StatusBoard.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=DATA_DIR,
+        default=f"sqlite:///{DATA_DIR / 'db.sqlite3'}",
     )
 }
 
