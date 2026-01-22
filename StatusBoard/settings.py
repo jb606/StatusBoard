@@ -165,3 +165,4 @@ if env('SB_ENABLE_OIDC'):
     }
     OIDC_SITE_ADMIN_ROLE = env("SB_OIDC_SITE_ADMIN_ROLE", default="site-admins")
     OIDC_STAFF_ROLE = env("SB_OIDC_STAFF_ROLE", default="staff")
+    OIDC_GROUPADM_ROLE = env("SB_GROUPADM_ROLE", default="status-admins")

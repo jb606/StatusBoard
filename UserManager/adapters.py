@@ -1,5 +1,6 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group as SystemGroup
 from django.conf import settings
 from StatusApp.models import UserStatus
 from StatusApp.models import Group as StatusGroup
@@ -14,9 +15,14 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
             user.is_staff = True
         elif settings.OIDC_STAFF_ROLE in user_roles:
             user.is_staff = True
+        elif settings.OIDC_GROUPADM_ROLE in user_roles:
+                group = SystemGroup.objects.get("StatusApp_GroupAdmins")
+                user.groups.add(group)
+                user.is_staff = True
         else:
             user.is_superuser = False
             user.is_staff = False
+        print("Save user called")
         user.save()
         return user
 
@@ -31,6 +37,8 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
             user.is_staff = True
         elif settings.OIDC_STAFF_ROLE in user_roles:
             user.is_staff = True
+        elif settings.OIDC_GROUPADM_ROLE in user_roles:
+                user.is_staff = True
         else:
             user.is_staff = False
             user.is_superuser = False
@@ -47,6 +55,11 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
                 user.is_superuser = True
                 user.is_staff = True
             elif settings.OIDC_STAFF_ROLE in user_roles:
+                user.is_staff = True
+            elif settings.OIDC_GROUPADM_ROLE in user_roles:
+                group = SystemGroup.objects.get(name="StatusApp_GroupAdmins")
+                user.groups.add(group)
+                print(group)
                 user.is_staff = True
             else:
                 user.is_staff = False
