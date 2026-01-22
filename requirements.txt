@@ -17,6 +17,7 @@ django-htmx==1.27.0
 django-tables2==2.8.0
 idna==3.11
 psycopg==3.3.2
+psycopg-binary==3.3.2
 pyaml==25.7.0
 pycparser==2.23
 PyJWT==2.10.1
