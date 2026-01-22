@@ -1,0 +1,30 @@
+- model: StatusApp.Status
+  pk: 1
+  fields:
+    name: "UNKNOWN"
+    css: "btn-secondary"
+    slug: "unknown"
+- model: StatusApp.Status
+  pk: 5
+  fields:
+    name: "IN"
+    css: "btn-success"
+    slug: "in"
+- model: StatusApp.Status
+  pk: 2
+  fields:
+    name: "OUT"
+    css: "btn-danger"
+    slug: "out"
+- model: StatusApp.Status
+  pk: 3
+  fields:
+    name: "GFTD"
+    css: "btn-warning"
+    slug: "gftd"
+- model: StatusApp.Status
+  pk: 4
+  fields:
+    name: "A/L"
+    css: "btn-warning"
+    slug: "al"

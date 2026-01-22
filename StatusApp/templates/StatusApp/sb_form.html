@@ -1,0 +1,21 @@
+{% extends "sb_base.html" %}
+{% load crispy_forms_tags %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+
+{%block pagetitle%}
+{% if group %}Edit {{group}}{% else %}Create a New Entry{% endif %}
+{%endblock%}
+{%block crud%}
+
+{%if form %}
+  <form method="POST" {% if form.is_multipart %}enctype="multipart/form-data" {% endif %}
+    action="{% if object %}{{ update_view_url }}{% else %}{{ create_view_url }}{% endif %}">
+    {% csrf_token %}
+    {% crispy form %}
+  </form>
+{%else%}
+  NO FORM FOUND!?!?!
+{%endif%}
+
+{%endblock%}

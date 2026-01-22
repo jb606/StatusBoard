@@ -1,5 +1,0 @@
-{% for r in results %}
-<tr>
-    <td class="col"><a href="{{ url_for('groupviews.groupShow', id=r.id ) }}">{{r.name}}</a></td><td class="col">{{r.description}}</td>
-</tr>
-{% endfor %}

@@ -1,0 +1,54 @@
+{# --------------------------------------------------------------------------- #}
+{% if not admin_mode and not is_a_mod %}
+{# --------------------------------------------------------------------------- #}
+
+<div id="group_members">
+{%for member in members%}
+  <div id="{{ member.slug }}" class="row text-start mb-2 mt-2 border-bottom">
+    <div class="col-2">{{ member }} </div>
+    <div class="col-1">
+      <a                   hx-target="#set_status" 
+                           hx-get="{% url 'status:user-modal' slug=member.slug %}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#set_status">
+      <button type="button" class="btn btn-sm {{ member.status.css }} w-100">{{ member.status }}</button></a>
+    </div>
+    <div class="col-6">{{ member.notes }} </div>
+    <div class="col-3">{{ member.updated }} by {% if member.updated_by %}{{ member.updated_by }}{%else%}Unknown{%endif%}</div>
+  </div>
+{%endfor%}
+</div>
+
+{# --------------------------------------------------------------------------- #}
+{%else%}
+{# --------------------------------------------------------------------------- #}
+
+<div id="group_members">
+{%for member in members %}
+  <div id="{{ member.slug }}" class="row text-start mb-2 mt-2 border-bottom">
+    <div class="col-2">{{ member }} </div>
+    <div class="col-1">
+      {% if member in group.mods.all %}
+        <button class="btn btn-danger w-100"
+        hx-get="{% url 'status:sb-group-crud' slug=group.slug user=member.slug action="deletemod" %}"
+                        hx-trigger="click"
+                        hx-target="#group_members">Remove Mod</button>
+      {% else %}
+        <button class="btn btn-success w-100"
+        hx-get="{% url 'status:sb-group-crud' slug=group.slug user=member.slug action="addmod" %}"
+                        hx-trigger="click"
+                        hx-target="#group_members">Make Mod</button>
+      {%endif%}
+    </div>
+    <div class="col-6"></div>
+    <div class="col-3"><button class="btn btn-danger"
+                        hx-get="{% url 'status:sb-group-crud' slug=group.slug user=member.slug action="deletemember" %}"
+                        hx-trigger="click"
+                        hx-target="#group_members">REMOVE USER</button></div>
+  </div>
+{%endfor%}
+</div>
+
+{# --------------------------------------------------------------------------- #}
+{%endif%}
+{# --------------------------------------------------------------------------- #}

@@ -1,0 +1,60 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% load django_htmx %}
+{% load i18n %}
+{% load status_tags %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% bootstrap_setting "color_mode" as COLOR_MODE %}
+{% bootstrap_setting "javascript_in_head" as BOOTSTRAP_JAVASCRIPT_IN_HEAD %}
+{% bootstrap_setting "theme_url" as THEME %}
+<html lang="{{ LANGUAGE_CODE|default:'en_us' }}"{% if COLOR_MODE %} data-bs-theme="{{ COLOR_MODE }}"{% endif %}>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page title -->
+    <title>{% block pagetitle %}template title{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+     {% if THEME %}
+       <link rel="stylesheet" href="{{THEME}}">
+      {%else %}
+        <link rel="stylesheet" href="{% static 'centraloffice/css/bootstrap.min.css' %}">
+      {%endif%}
+    <!-- Bootstrap JavaScript if it is in head -->
+    {% if BOOTSTRAP_JAVASCRIPT_IN_HEAD %}<script src="{% static 'centraloffice/js/bootstrap.bundle.min.js' %}"></script>{% endif %}
+    {% htmx_script %}
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+{% block before_content %}
+
+
+{% endblock %}
+{% include "topbar.html" %}
+<div id="wrapper" class="row">
+
+  <div class="col-2">
+    {% include "sidebar.html" %}
+  </div>
+
+  <div class="col-10">
+    <div class="continer-fluid">
+      {%block content %}CONTENT{%endblock%}
+    </div>
+  </div>
+</div>
+
+{% status_modal_target %}
+
+
+
+{% block after_content %}{% endblock %}
+<!-- Bootstrap JavaScript if it is in body -->
+{% if not BOOTSTRAP_JAVASCRIPT_IN_HEAD %}<script src="{% static 'centraloffice/js/bootstrap.bundle.min.js' %}"></script>{% endif %}
+
+{% block extra_script %}{% endblock %}
+</body>
+
+</html>

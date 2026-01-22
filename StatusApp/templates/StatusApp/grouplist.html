@@ -1,0 +1,60 @@
+{% extends "sb_base.html" %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+{% load crispy_forms_tags %}
+{%block pagetitle%}{{ group }}{%endblock%}
+
+
+
+  {%block content%}
+<center>
+  <h2> <a href="{% url 'status:sb-group-view' slug=group.slug %}">{{ group }}</a> </h2>
+{% if group.description %}
+<p> [{{ group.description }}] <p>
+{%endif%}
+
+
+<!--Members table-->
+<div class="container-fluid text-start border-bottom">
+  <!--Members header-->
+  <div class="row mb-2">
+    <div class="col-2">Name</div>
+    <div class="col-1">Status</div>
+    <div class="col-6">Notes</div>
+    <div class="col-3">Updated</div>
+  </div>
+  
+  
+</div>
+  <!--End Header-->
+<div id="group_members" hx-trigger="load" hx-get="{% url "status:sb-group-members" slug=group.slug %}">
+
+
+</div>
+  
+
+
+
+{% if is_a_mod %}
+  <div class="row mb-2" id="edit_mode">
+    <div class="col-2"></div>
+    <div class="col-1"></div>
+    <div class="col-6">[ <a href="{% url 'status:sb-group-mod' slug=group.slug %}">Edit</a> | <a href="{% url 'status:sb-group-mod' slug=group.slug %}">Delete</a> ]</div>
+    <div class="col-3">
+      
+    </div>
+  </div>
+
+</div> <!--End member table-->
+
+{%else%}
+Moderators:
+
+{%for mod in group.mods.all %}
+{{ mod }} <p>
+{%endfor%}
+{%endif%}
+
+  {%endblock%}
+  

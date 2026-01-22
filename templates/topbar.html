@@ -1,0 +1,63 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% load account %}
+{% load status_tags %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Status Board</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      {%block topnavmenu %}
+      {%endblock%}
+      {% if user.is_authenticated %}
+      <div class="d-flex ms-auto me-3 position-relative">
+        <input
+          id="user-search-input"
+          class="form-control form-control-sm"
+          type="search"
+          name="q"
+          placeholder="Search users"
+          aria-label="Search users"
+          autocomplete="off"
+          hx-get="{% url 'status:user-status-search' %}"
+          hx-trigger="keyup changed delay:300ms"
+          hx-target="#user-search-results"
+        />
+        <div id="user-search-results" class="position-absolute top-100 start-0 mt-1 w-100"></div>
+      </div>
+      {% endif %}
+        <ul class="navbar-nav me-2 mb-lg-0 ">
+      {% if user.is_authenticated %}
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{user.first_name}} {{user.last_name}} ({{user.username}})
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" 
+                           hx-target="#set_status" 
+                           hx-get="{% url 'status:user-modal' slug=user.slug %}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#set_status">Status ({{user.status.status}})</a></li>
+                    
+                    {% if user.is_staff %}
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'admin:index' %}">Site Admin</a></li>
+                    {%endif%}
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign Out</a></li>
+                </ul>
+            </li>
+
+      {%else%}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'account_login' %}">Sign In</a>
+      </li>
+      {%endif%}
+    </ul>
+
+    </div>
+</nav>

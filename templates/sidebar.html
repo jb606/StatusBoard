@@ -1,0 +1,38 @@
+    <!-- Sidebar col-md-3 col-lg-2   -->
+    <nav id="sidebarMenu" class="d-md-block sidebar collapse">
+      <div class="position-sticky">
+        <ul class="nav flex-column">
+          {% for item in main_menu %}
+             
+            {% if item.children %}
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" data-bs-toggle="collapse" href="#submenu{{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="submenu{{ forloop.counter }}">
+                  {% if item.icon %}<i class="bi {{ item.icon }} me-2"></i>{% endif %}
+                  {{ item.label }}
+                  <i class="bi bi-caret-down-fill ms-auto small"></i>
+                </a>
+                <div class="collapse" id="submenu{{ forloop.counter }}">
+                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
+                    {% for child in item.children %}
+                      <li>
+                        <a class="nav-link" href="{% url child.url_name %}">
+                          {% if child.icon %}<i class="bi {{ child.icon }} me-1"></i>{% endif %}
+                          {{ child.label }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="{% url item.url_name %}">
+                  {% if item.icon %}<i class="bi {{ item.icon }} me-2"></i>{% endif %}
+                  {{ item.label }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </nav>
