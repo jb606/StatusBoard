@@ -1,0 +1,27 @@
+{% if query %}
+  <div class="list-group shadow-sm">
+    {% if users %}
+      {% for u in users %}
+        <a
+          href="#"
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          hx-target="#set_status"
+          hx-get="{% url 'status:user-modal' slug=u.slug %}"
+          data-bs-toggle="modal"
+          data-bs-target="#set_status"
+        >
+          <span class="text-truncate">
+            {% if u.user.first_name or u.user.last_name %}
+              {{ u.user.first_name }} {{ u.user.last_name }}
+            {% else %}
+              {{ u.user.username }}
+            {% endif %}
+          </span>
+          <span class="badge bg-secondary">{{ u.status.name }}</span>
+        </a>
+      {% endfor %}
+    {% else %}
+      <div class="list-group-item text-muted">No matches</div>
+    {% endif %}
+  </div>
+{% endif %}
