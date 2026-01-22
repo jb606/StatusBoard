@@ -11,6 +11,23 @@
       </button>
       {%block topnavmenu %}
       {%endblock%}
+      {% if user.is_authenticated %}
+      <div class="d-flex ms-auto me-3 position-relative">
+        <input
+          id="user-search-input"
+          class="form-control form-control-sm"
+          type="search"
+          name="q"
+          placeholder="Search users"
+          aria-label="Search users"
+          autocomplete="off"
+          hx-get="{% url 'status:user-status-search' %}"
+          hx-trigger="keyup changed delay:300ms"
+          hx-target="#user-search-results"
+        />
+        <div id="user-search-results" class="position-absolute top-100 start-0 mt-1 w-100"></div>
+      </div>
+      {% endif %}
         <ul class="navbar-nav me-2 mb-lg-0 ">
       {% if user.is_authenticated %}
 

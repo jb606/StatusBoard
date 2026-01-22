@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path("group/<slug:slug>/mod", views.GroupModView, name="sb-group-mod"),
     path("group/<slug:slug>/user/search", views.UserSearch, name="user-search"),
+    path("user/search/", views.UserStatusSearch, name="user-status-search"),
     path("userstatus/modal/<slug:slug>", views.UserStatusModal, name="user-modal"),
     path("members/<slug:slug>/", views.LoadGroupMembers, name="sb-group-members"),
 ]

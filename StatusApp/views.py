@@ -170,6 +170,24 @@ def UserSearch(request, slug):
 
 
 @login_required
+def UserStatusSearch(request):
+    query = request.GET.get("q", "").strip()
+    users = models.UserStatus.objects.none()
+    if query:
+        users = (
+            models.UserStatus.objects.select_related("user", "status")
+            .filter(
+                Q(user__first_name__icontains=query)
+                | Q(user__username__icontains=query)
+                | Q(user__last_name__icontains=query)
+            )
+            .order_by("user__last_name", "user__first_name")
+        )[:10]
+    context = {"users": users, "query": query}
+    return render(request, "StatusApp/partials/topbar_user_search_results.html", context)
+
+
+@login_required
 def UpdateUserStatus(request, user_slug, status_slug):
     user = get_object_or_404(models.UserStatus, slug=user_slug)
     status = get_object_or_404(models.Status, slug=status_slug)
